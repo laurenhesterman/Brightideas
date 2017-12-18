@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Coding Dojos</title>
+    <style>
+    body {
+        padding: 2em;
+        
+        background-attachment: fixed; !important; 
+    }
+    h1 {
+        margin-bottom: 1em;
+    }
+    .extra {
+        margin-top: .6em;
+        margin-bottom: .6em;
+    }
+    h3 {
+        padding-top: .4em;
+        padding-bottom: .4em;
+    }
+    .extra {
+        padding: 1em;
+    }
+    .together {
+        display: inline-block;
+        margin-right: .9em;
+    }
+    .width {
+        width: 20 %
+
+    }
+    
+    
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body >
+<h2 class="text-info"><%= @thispost.user.alias %> says:</h2>
+<p><%= @thispost.content %></p>
+
+ 
+
+<h3 class="text-info">Listing <%= pluralize(@theselikers.count, "Liker") %></h3>
+
+<table class="table table-striped">
+<thead class="thead-dark">
+<tr>
+    <th scope="col">Alias</th>
+    <th scope="col">Name</th>
+    
+                           
+</tr>
+</thead>
+<tbody>
+<% @theselikers.each do |liker| %>       
+<tr>
+    <td> <a href="/users/<%= liker.user.id %>" ><%= liker.user.alias %> </a></td>
+    <td>  <%= liker.user.name %> </a></td>
+   
+    
+   
+</tr>       
+<% end %>
+</tbody>
+</table>
+<form action="/sessions/<%=current_user.id%>" method="post" class="together">
+<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+<input type="hidden" name="_method" value="delete">
+<input type="submit" value="Log Out" >
+</form> <a href="/ideas"> All Ideas<a>
+
+</body>
+</html>

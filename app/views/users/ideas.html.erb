@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Coding Dojos</title>
+    <style>
+    body {
+        padding: 2em;
+        
+    }
+    h1 {
+        margin-bottom: 1em;
+    }
+    .extra {
+        margin-top: .6em;
+        margin-bottom: .6em;
+    }
+    h3 {
+        padding-top: .4em;
+        padding-bottom: .4em;
+    }
+    .extra {
+        padding: 1em;
+    }
+    .together {
+        display: inline-block;
+        margin-right: .9em;
+    }
+    .width {
+        width: 20 %
+
+    }
+    
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body >
+<h1 class="text-info" >Welcome, <%= current_user.alias %>!</h1>
+<form action="/sessions/<%=current_user.id%>" method="post" class="together">
+<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+<input type="hidden" name="_method" value="delete">
+<input type="submit" value="Log Out" >
+</form>
+
+<h3 class="text-info">Add a Post</h3>
+<form action="/posts/create" method="post">
+<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+
+
+    <label for="content">Post:</label>
+    <input type="text" id="title" name=post[content] class="w-50 p-3 width" placeholder="Say Something Witty ">   
+    <input type="submit" class="extra" value="Add Post">
+    
+
+</form>
+    <% if flash[:errors] %>
+    <% flash[:errors].each do |e| %>
+        <p><%= e %></p>
+    <% end %>
+    <% end %>
+    <h3 class="text-info">All Post(s)</h3>
+    <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Original Poster</th>
+        <th scope="col">Post Content</th>
+        <th scope="col">Likes</th>
+        <th scope="col">Actions</th>
+                               
+    </tr>
+    </thead>
+    <tbody>
+    <% @theseposts.each do |post| %>       
+    <tr>
+        <td> <a href="/users/<%= post.user.id %>"> <%= post.user.alias %> </a></td>
+        <td> <%= post.content %> </td>
+        <td> <a href="/ideas/<%= post.id %>" ><%= Like.all.where("post_id = ?", post.id).count %> people</a> like this</td>
+        <td> 
+        
+            <% if post.user_id == current_user.id %>
+            <form action="/posts/<%= post.id %>" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="Delete Post" >
+            
+            </form> 
+            
+            <% end %>
+            <form action="/likes/<%= post.id %>" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="submit" value="Like Post" >
+            <br>
+            </form> 
+
+        </td>
+    </tr>       
+    <% end %>
+    <% @nolikes.each do |post| %>  
+        <tr>
+
+        <td> <a href="/users/<%= post.user.id %>"> <%= post.user.alias %> </a></td>
+        <td> <%= post.content %> </td>
+        <td> <a href="/ideas/<%= post.id %>" ><%= Like.all.where("post_id = ?", post.id).count %> people</a> like this</td>
+        <td> 
+        
+            <% if post.user_id == current_user.id %>
+            <form action="/posts/<%= post.id %>" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="Delete Post" >
+            
+            </form> 
+            
+            <% end %>
+            <form action="/likes/<%= post.id %>" method="post">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            <input type="submit" value="Like Post" >
+            <br>
+            </form> 
+
+
+
+        </tr>
+        <% end %>
+
+
+
+
+    </tbody>
+    </table>
+
+
+</body>
+</html>

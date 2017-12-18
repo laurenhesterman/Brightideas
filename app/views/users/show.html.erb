@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Coding Dojos</title>
+    <style>
+    body {
+        padding: 2em;
+        
+        background-attachment: fixed; !important; 
+    }
+    h1 {
+        margin-bottom: 1em;
+    }
+    .extra {
+        margin-top: .6em;
+        margin-bottom: .6em;
+    }
+    h3 {
+        padding-top: .4em;
+        padding-bottom: .4em;
+    }
+    .extra {
+        padding: 1em;
+    }
+    .together {
+        display: inline-block;
+        margin-right: .9em;
+    }
+    .width {
+        width: 20 %
+
+    }
+    
+    
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body >
+<h1>Name: <%= @thisuser.name %></h1>
+<h3>Alias: <%= @thisuser.alias %></h3>
+<h3>Email: <%= @thisuser.email %></h3>
+<h4>Total Number of Posts: <%= Like.all.where("user_id = ?", @thisuser.id).count %> </h4>
+<h4>Total Number of Likes: <%= Post.all.where("user_id = ?", @thisuser.id).count %> </h4>
+
+<form action="/sessions/<%=current_user.id%>" method="post" class="together">
+<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+<input type="hidden" name="_method" value="delete">
+<input type="submit" value="Log Out" >
+</form> <a href="/ideas"> All Ideas<a>
+
+
+
+
+
+</body>
+</html>
